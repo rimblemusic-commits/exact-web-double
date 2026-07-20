@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import heroFigure from "@/assets/hero-figure.jpg";
-import moneyStack from "@/assets/money-stack.png";
+import heroSplit from "@/assets/hero-split.jpg.asset.json";
 import simonDubai from "@/assets/simon-dubai.jpg";
 
 export const Route = createFileRoute("/")({
@@ -76,7 +76,7 @@ function Landing() {
       <header className="sticky top-0 z-40 border-b border-border/60 bg-background/70 backdrop-blur-lg">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
           <a href="#top" className="text-2xl font-extrabold tracking-tight">
-            PROD
+            ZARGAROV
           </a>
           <nav className="hidden items-center gap-10 md:flex">
             {nav.map((n) => (
@@ -107,50 +107,26 @@ function Landing() {
         <div className="relative mx-auto grid max-w-7xl grid-cols-1 items-center gap-10 px-6 py-20 md:grid-cols-2 md:py-28">
           <div>
             <h1 className="text-5xl font-extrabold leading-[1.05] tracking-tight md:text-6xl">
-              <span className="text-foreground">PROD</span>
-              <span className="text-muted-foreground"> — результат вместо</span>
+              <span className="text-foreground">АРБИТРАЖ</span>
+              <span className="text-muted-foreground"> — вершина</span>
               <br />
-              <span className="text-foreground">бесконечного старта</span>
+              <span className="text-foreground">денежного потока</span>
             </h1>
             <p className="mt-6 max-w-md text-base text-muted-foreground md:text-lg">
-              Всё, что принесло Симону более 1,5 млн ₽/мес и генерирует миллионы его ученикам.
+              Только то, что работает, только то, что приносит прибыль.
             </p>
-            <a href="#pricing" className="btn-pill btn-pill-light mt-10">
-              Перейти к тарифам
-            </a>
           </div>
 
           <div className="relative mx-auto aspect-[4/5] w-full max-w-md">
             <img
-              src={heroFigure}
-              alt="Фигура с деньгами"
-              width={900}
-              height={1100}
+              src={heroSplit.url}
+              alt="ZARGAROV"
+              width={1920}
+              height={1080}
               className="h-full w-full rounded-3xl object-cover"
             />
-            <img
-              src={moneyStack}
-              alt=""
-              aria-hidden
-              className="absolute -left-8 top-8 w-40 rotate-[-18deg] drop-shadow-2xl md:w-52"
-              loading="lazy"
-            />
-            <img
-              src={moneyStack}
-              alt=""
-              aria-hidden
-              className="absolute -right-8 top-24 w-36 rotate-[14deg] drop-shadow-2xl md:w-48"
-              loading="lazy"
-            />
-            <img
-              src={moneyStack}
-              alt=""
-              aria-hidden
-              className="absolute -right-6 bottom-6 w-44 rotate-[-6deg] drop-shadow-2xl md:w-56"
-              loading="lazy"
-            />
             <div className="absolute bottom-6 left-6 rounded-2xl border border-white/10 bg-black/60 px-4 py-3 backdrop-blur">
-              <div className="text-sm font-bold">PROD</div>
+              <div className="text-sm font-bold">ZARGAROV</div>
               <div className="text-xs text-muted-foreground">879 подписчиков</div>
             </div>
           </div>
