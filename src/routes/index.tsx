@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import heroFigure from "@/assets/hero-figure.jpg";
 import heroSplit from "@/assets/hero-split.jpg.asset.json";
-import simonDubai from "@/assets/simon-dubai.jpg";
+import zargarovDesert from "@/assets/zargarov-desert.jpg.asset.json";
 
 export const Route = createFileRoute("/")({
   component: Landing,
@@ -127,7 +127,6 @@ function Landing() {
             />
             <div className="absolute bottom-6 left-6 rounded-2xl border border-white/10 bg-black/60 px-4 py-3 backdrop-blur">
               <div className="text-sm font-bold">ZARGAROV</div>
-              <div className="text-xs text-muted-foreground">879 подписчиков</div>
             </div>
           </div>
         </div>
@@ -137,59 +136,45 @@ function Landing() {
       <section className="mx-auto max-w-7xl px-6 pb-20">
         <div className="card-surface p-6 md:p-10">
           <h2 className="text-center text-4xl font-extrabold tracking-tight text-silver md:text-5xl">
-            Кто такой Симон?
+            Кто такой ZARGAROV?
           </h2>
 
           <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2">
             <div className="flex flex-col gap-6">
               <div className="card-surface p-6">
-                <h3 className="text-2xl font-bold">Семён Гельфенбуйм</h3>
+                <h3 className="text-2xl font-bold">Заргаров Виталий</h3>
                 <p className="mt-3 text-sm text-muted-foreground">
                   <span className="font-semibold text-foreground">Деятельность:</span>{" "}
-                  построение личных брендов и продажа цифровых продуктов
+                  АРБИТРАЖ НА РКО и продажа цифровых продуктов
                 </p>
                 <div className="mt-6 flex items-end gap-10">
                   <div>
-                    <div className="text-4xl font-extrabold">17</div>
+                    <div className="text-4xl font-extrabold">20</div>
                     <div className="text-xs uppercase tracking-widest text-muted-foreground">
                       лет
                     </div>
                   </div>
                   <div>
-                    <div className="text-4xl font-extrabold">1.5 млн ₽/мес</div>
+                    <div className="text-4xl font-extrabold">3.3 млн ₽</div>
                     <div className="text-xs uppercase tracking-widest text-muted-foreground">
-                      доход
+                      суммарный доход учеников
                     </div>
                   </div>
                 </div>
               </div>
 
               <div className="space-y-4 text-sm leading-relaxed text-muted-foreground md:text-base">
-                <p>В 15 лет начал активно снимать на YouTube.</p>
-                <p>
-                  В 2024 году делал монтаж на заказ и делал деньги с YouTube на партнёрском
-                  маркетинге. Поработал с топами рынка, делая несложные, но очень виральные видео.
-                </p>
-                <p>К концу 2024 года вышел на 150–200к ₽/мес с любимого дела.</p>
-                <p>
-                  После этого создал и начал продвигать свой продукт — за полгода вырос с
-                  200 000 до 1 500 000 ₽/мес.
-                </p>
-                <p>
-                  Сейчас продолжаю двигать свой личный бренд и создаю его другим предпринимателям.
-                  Имею в работе более 15 клиентов.
-                </p>
-                <p>
-                  PROD — это ключевые действия в сфере цифровых услуг и продуктов, которые
-                  привели меня к результату 13,5 млн, заработанных в 17 лет.
-                </p>
+                <p>В 11 лет начал делать монтаж на заказ.</p>
+                <p>В 2021 ушёл в музыку, открыв лейбл и студию звукозаписи.</p>
+                <p>После случился крах всего и переход в АРБИТРАЖ.</p>
+                <p>Сейчас продолжаю развивать сферу АРБИТРАЖА.</p>
               </div>
             </div>
 
             <div className="overflow-hidden rounded-3xl border border-border">
               <img
-                src={simonDubai}
-                alt="Семён Гельфенбуйм"
+                src={zargarovDesert.url}
+                alt="Заргаров Виталий"
                 width={900}
                 height={1200}
                 loading="lazy"
