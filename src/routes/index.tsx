@@ -15,7 +15,7 @@ const nav = [
   { label: "Тарифы", href: "#pricing" },
 ];
 
-const reviews = [
+const reviews: Array<{ n: string; name: string; tag: string; text: string; poster?: string }> = [
   {
     n: "01",
     name: "Глеб, 19 лет, 160к ₽",
