@@ -132,10 +132,12 @@ function Landing() {
             </div>
           </div>
         </div>
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-b from-transparent to-background" />
       </section>
 
       {/* WHO IS SIMON */}
-      <section className="mx-auto max-w-7xl px-6 pb-20">
+      <section className="relative mx-auto max-w-7xl px-6 pb-20 animate-fade-in">
+        <div className="pointer-events-none absolute inset-x-0 -top-32 h-32 bg-gradient-to-b from-background to-transparent" />
         <div className="card-surface p-6 md:p-10">
           <h2 className="text-center text-4xl font-extrabold tracking-tight text-silver md:text-5xl">
             Кто такой ZARGAROV?
