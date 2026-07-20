@@ -119,13 +119,13 @@ function Landing() {
             </p>
           </div>
 
-          <div className="relative mx-auto aspect-[4/5] w-full max-w-md">
+          <div className="relative mx-auto w-full">
             <img
               src={heroSplit.url}
               alt="ZARGAROV"
               width={1920}
               height={1080}
-              className="h-full w-full rounded-3xl object-cover"
+              className="h-auto w-full rounded-3xl object-contain"
             />
             <div className="absolute bottom-6 left-6 rounded-2xl border border-white/10 bg-black/60 px-4 py-3 backdrop-blur">
               <div className="text-sm font-bold">ZARGAROV</div>
