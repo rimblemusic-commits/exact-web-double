@@ -1,5 +1,4 @@
 import { createFileRoute } from "@tanstack/react-router";
-import heroFigure from "@/assets/hero-figure.jpg";
 import heroSplit from "@/assets/hero-split.jpg.asset.json";
 import zargarovDesert from "@/assets/zargarov-desert.jpg.asset.json";
 import faqPortrait from "@/assets/faq-portrait.jpg.asset.json";
@@ -352,6 +351,23 @@ function VideoTile({ poster }: { poster?: string }) {
         </svg>
       </button>
     </div>
+  );
+}
+
+function ImageTile({ poster }: { poster?: string }) {
+  return (
+    <div
+      className="aspect-video w-full overflow-hidden rounded-2xl border border-border bg-secondary"
+      style={
+        poster
+          ? {
+              backgroundImage: `url(${poster})`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+            }
+          : undefined
+      }
+    />
   );
 }
 
