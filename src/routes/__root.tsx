@@ -88,11 +88,15 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         property: "og:description",
         content:
-          "Всё, что принесло Симону более 1,5 млн ₽/мес и генерирует миллионы его ученикам.",
+          "PROD Симона — всё, что принесло более 1,5 млн ₽/мес и генерирует миллионы его ученикам.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:site", content: "@prodsimon" },
+      { name: "twitter:title", content: "PROD — результат вместо бесконечного старта" },
+      { name: "twitter:description", content: "PROD Симона — всё, что принесло более 1,5 млн ₽/мес и генерирует миллионы его ученикам." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/562f0590-ac53-4fda-bf44-f6f0e5ab7f49/id-preview-4cf9ab6d--bfc74836-c4f6-47f0-8db9-cf291a7094c4.lovable.app-1784599140356.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/562f0590-ac53-4fda-bf44-f6f0e5ab7f49/id-preview-4cf9ab6d--bfc74836-c4f6-47f0-8db9-cf291a7094c4.lovable.app-1784599140356.png" },
     ],
     links: [
       {
