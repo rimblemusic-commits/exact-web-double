@@ -77,24 +77,24 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "PROD — результат вместо бесконечного старта" },
+      { title: "ZARGAROV RKO" },
       {
         name: "description",
         content:
-          "PROD Симона — всё, что принесло более 1,5 млн ₽/мес и генерирует миллионы его ученикам.",
+          "АРБИТРАЖ НА РКО - только то что работает, только то что приносит прибыль",
       },
       { name: "author", content: "Семён Гельфенбуйм" },
-      { property: "og:title", content: "PROD — результат вместо бесконечного старта" },
+      { property: "og:title", content: "ZARGAROV RKO" },
       {
         property: "og:description",
         content:
-          "PROD Симона — всё, что принесло более 1,5 млн ₽/мес и генерирует миллионы его ученикам.",
+          "АРБИТРАЖ НА РКО - только то что работает, только то что приносит прибыль",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:site", content: "@prodsimon" },
-      { name: "twitter:title", content: "PROD — результат вместо бесконечного старта" },
-      { name: "twitter:description", content: "PROD Симона — всё, что принесло более 1,5 млн ₽/мес и генерирует миллионы его ученикам." },
+      { name: "twitter:title", content: "ZARGAROV RKO" },
+      { name: "twitter:description", content: "АРБИТРАЖ НА РКО - только то что работает, только то что приносит прибыль" },
       { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/562f0590-ac53-4fda-bf44-f6f0e5ab7f49/id-preview-4cf9ab6d--bfc74836-c4f6-47f0-8db9-cf291a7094c4.lovable.app-1784599140356.png" },
       { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/562f0590-ac53-4fda-bf44-f6f0e5ab7f49/id-preview-4cf9ab6d--bfc74836-c4f6-47f0-8db9-cf291a7094c4.lovable.app-1784599140356.png" },
     ],
@@ -103,7 +103,6 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         rel: "stylesheet",
         href: appCss,
       },
-      { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "" },
       {
