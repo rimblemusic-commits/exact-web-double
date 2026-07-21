@@ -404,7 +404,7 @@ function PricingCard({
         href="https://t.me/prodsimon"
         className={`btn-pill mt-6 w-full ${featured ? "btn-pill-red" : "btn-pill-light"}`}
       >
-        Перейти к оплате
+        Перейти в тг
       </a>
       <div className="mt-6 flex items-center gap-3 text-xs uppercase tracking-[0.16em] text-muted-foreground">
         <span className="h-px flex-1 bg-border" />
