@@ -92,7 +92,7 @@ function Landing() {
             ))}
           </nav>
           <a
-            href="https://t.me/prodsimon"
+            href="https://telegram.me/+BV_uXHwGpNBjN2Yy"
             target="_blank"
             rel="noreferrer"
             className="text-sm font-medium text-foreground/90 transition hover:text-foreground"
@@ -269,12 +269,7 @@ function Landing() {
         <StepHeader
           number="ШАГ 4:"
           title="Прими решение"
-          subtitle="Напиши Симону о покупке, нажав «Войти в PROD»"
         />
-        <div className="mx-auto max-w-3xl px-6">
-          <ImageTile />
-        </div>
-
         <div className="mx-auto mt-16 grid max-w-3xl grid-cols-1 items-start gap-6 px-6 pb-24">
           <PricingCard
             title="Доступ в телеграм канал"
@@ -288,14 +283,7 @@ function Landing() {
       {/* FOOTER */}
       <footer className="border-t border-border/60">
         <div className="mx-auto max-w-7xl px-6 py-10 text-center text-xs text-muted-foreground">
-          <div>ИП ГЕЛЬФЕНБУЙМ СЕМЁН ВИКТОРОВИЧ</div>
-          <div className="mt-1">ИНН: 590318333468</div>
-          <a
-            className="mt-3 inline-block text-foreground/80 hover:text-foreground"
-            href="mailto:simon.commercial@mail.ru"
-          >
-            simon.commercial@mail.ru
-          </a>
+          <div>ZARGAROV</div>
         </div>
       </footer>
     </div>
@@ -401,7 +389,9 @@ function PricingCard({
         <span className="pb-2 text-sm text-muted-foreground">руб.</span>
       </div>
       <a
-        href="https://t.me/prodsimon"
+        href="https://telegram.me/+BV_uXHwGpNBjN2Yy"
+        target="_blank"
+        rel="noreferrer"
         className={`btn-pill mt-6 w-full ${featured ? "btn-pill-red" : "btn-pill-light"}`}
       >
         Перейти в тг
