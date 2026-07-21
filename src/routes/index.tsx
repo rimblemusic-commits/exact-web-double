@@ -1,12 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
 import heroSplit from "@/assets/hero-split.jpg.asset.json";
-import zargarovDesert from "@/assets/zargarov-desert.jpg.asset.json";
-import faqPortrait from "@/assets/faq-portrait.jpg.asset.json";
-import bankDiagram from "@/assets/bank-diagram.jpg.asset.json";
-import romaImg from "@/assets/roma.jpg.asset.json";
-import nikitaImg from "@/assets/nikita.jpg.asset.json";
-import dimaImg from "@/assets/dima.jpg.asset.json";
-import questionImg from "@/assets/question.jpg.asset.json";
+const zargarovDesert = { url: "/zargarov-desert.jpg" };
+const faqPortrait = { url: "/faq-portrait.jpg" };
+const bankDiagram = { url: "/bank-diagram.jpg" };
+const romaImg = { url: "/roma.jpg" };
+const nikitaImg = { url: "/nikita.jpg" };
+const dimaImg = { url: "/dima.jpg" };
+const questionImg = { url: "/question.jpg" };
 
 export const Route = createFileRoute("/")({
   component: Landing,
