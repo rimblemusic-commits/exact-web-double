@@ -202,7 +202,9 @@ function Landing() {
         subtitle="И осознай, что это не очередная схемка-темка."
       />
       <div className="mx-auto max-w-4xl px-6 pb-24">
-        <VideoTile poster={heroFigure} />
+        <div className="overflow-hidden rounded-2xl border border-border bg-white">
+          <img src={bankDiagram.url} alt="Схема арбитража на РКО" className="h-auto w-full" />
+        </div>
       </div>
 
       {/* STEP 2 - reviews */}
@@ -220,13 +222,13 @@ function Landing() {
             >
               <div className={i % 2 === 1 ? "md:order-2" : ""}>
                 <h3 className="text-xl font-bold md:text-2xl">{r.name}</h3>
-                <p className="mt-1 text-sm text-muted-foreground">{r.tag}</p>
+              {r.tag && <p className="mt-1 text-sm text-muted-foreground">{r.tag}</p>}
                 <p className="mt-5 text-sm leading-relaxed text-foreground/85 md:text-base">
                   {r.text}
                 </p>
               </div>
               <div className={i % 2 === 1 ? "md:order-1" : ""}>
-                <VideoTile poster={r.poster} />
+              <ImageTile poster={r.poster} />
               </div>
               <div className="pointer-events-none absolute bottom-4 right-6 text-6xl font-extrabold text-white/[0.05] md:text-8xl">
                 {r.n}
@@ -234,11 +236,7 @@ function Landing() {
             </div>
           ))}
         </div>
-        <div className="mb-24 flex justify-center">
-          <a href="https://t.me/prodsimon" className="btn-pill bg-secondary text-secondary-foreground">
-            больше отзывов
-          </a>
-        </div>
+        <div className="pb-8" />
       </section>
 
       {/* STEP 3 - FAQ */}
@@ -255,7 +253,7 @@ function Landing() {
         <div className="mx-auto grid max-w-6xl grid-cols-1 gap-6 px-6 pb-24 md:grid-cols-2">
           {faqs.map((f) => (
             <div key={f.q} className="card-surface grid grid-cols-1 gap-4 overflow-hidden p-4 md:grid-cols-[1fr_1.3fr] md:p-6">
-              <VideoTile />
+              <ImageTile poster={questionImg.url} />
               <div className="p-2">
                 <h3 className="text-lg font-bold md:text-xl">{f.q}</h3>
                 <p className="mt-3 text-sm leading-relaxed text-muted-foreground md:text-base">
@@ -275,25 +273,15 @@ function Landing() {
           subtitle="Напиши Симону о покупке, нажав «Войти в PROD»"
         />
         <div className="mx-auto max-w-3xl px-6">
-          <VideoTile />
+          <ImageTile />
         </div>
 
-        <div className="mx-auto mt-16 grid max-w-6xl grid-cols-1 items-start gap-6 px-6 pb-24 md:grid-cols-3">
+        <div className="mx-auto mt-16 grid max-w-3xl grid-cols-1 items-start gap-6 px-6 pb-24">
           <PricingCard
-            title="Доступ в PROD навсегда"
-            price="19 000"
-            items={included}
-          />
-          <PricingCard
-            title="Доступ в PROD на 3 месяца"
-            price="12 900"
+            title="Доступ в телеграм канал"
+            price="0"
             items={included}
             featured
-          />
-          <PricingCard
-            title="Консультация + PROD"
-            price="55 000"
-            items={consultIncluded}
           />
         </div>
       </section>
