@@ -1,8 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
-import heroFigure from "@/assets/hero-figure.jpg";
 import heroSplit from "@/assets/hero-split.jpg.asset.json";
 import zargarovDesert from "@/assets/zargarov-desert.jpg.asset.json";
 import faqPortrait from "@/assets/faq-portrait.jpg.asset.json";
+import bankDiagram from "@/assets/bank-diagram.jpg.asset.json";
+import romaImg from "@/assets/roma.jpg.asset.json";
+import nikitaImg from "@/assets/nikita.jpg.asset.json";
+import dimaImg from "@/assets/dima.jpg.asset.json";
+import questionImg from "@/assets/question.jpg.asset.json";
 
 export const Route = createFileRoute("/")({
   component: Landing,
@@ -25,21 +29,24 @@ const reviews: Array<{ n: string; name: string; tag: string; text: string; poste
   },
   {
     n: "02",
-    name: "Артём, 18 лет, 200к ₽/мес",
-    tag: "AI Digital",
-    text: "За 2 месяца в PROD сделал более 400к ₽ с полного нуля. На данный момент двигает своё агентство по ИИ и запускает личный бренд.",
+    name: "Рома, 20 лет, 77к ₽",
+    tag: "",
+    text: "Работал на складе WB, был неудачный опыт в трейдинге, пробовал заниматься дизайном, сейчас набирает обороты в арбитраже.",
+    poster: romaImg.url,
   },
   {
     n: "03",
-    name: "Иван, 21 год, 250–300к ₽/мес",
-    tag: "Ютуб-продюсирование",
-    text: "Год назад работал разнорабочим в продуктовом. После входа в PROD за 3 месяца сделал 100 тыс ₽/мес с нуля, а потом и 250 тыс ₽/мес. Сейчас работает с топовыми компаниями.",
+    name: "Никита, 23 года, 120к ₽",
+    tag: "",
+    text: "Если честно, ждал какого-то чуда от жизни и не было какой-то мотивации, не хотел тратить энергию. Был негативный опыт в P2P, в основном старался зарабатывать в интернете, был также чаттинг, но всё это брехня по сравнению с арбитражом.",
+    poster: nikitaImg.url,
   },
   {
     n: "04",
-    name: "Арсен, 16 лет, 150к ₽/мес",
-    tag: "Монтаж рекламных роликов на западный рынок",
-    text: "Учась в лицее, где очень мало времени, смог выйти на стабильные 100к ₽ спустя 1,5 месяца входа в PROD.",
+    name: "Дима, 15 лет, 55к ₽",
+    tag: "",
+    text: "Этот человек подтверждает, что имея желание, можно зайти в любую сферу — он только начал, у него всё впереди.",
+    poster: dimaImg.url,
   },
 ];
 
@@ -59,16 +66,9 @@ const faqs = [
 ];
 
 const included = [
-  "Доступ ко ВСЕМ материалам (список материалов внутри)",
-  "Эфиры с индивидуальными РАЗБОРАМИ каждый месяц",
-  "Окружение молодых предпринимателей",
-];
-
-const consultIncluded = [
-  "Двухчасовой звонок с Симоном",
-  "Индивидуальный план действий: понимание, что делать конкретно СЕЙЧАС",
-  "Запись нашей консультации",
-  "Работа в личных сообщениях даже после консультации",
+  "Бесплатные связки и информация по арбитражу",
+  "Актуальные сферы и оферы в арбитраже",
+  "Окружение единомышленников (в этой сфере информации реально мало)",
 ];
 
 function Landing() {
@@ -201,7 +201,9 @@ function Landing() {
         subtitle="И осознай, что это не очередная схемка-темка."
       />
       <div className="mx-auto max-w-4xl px-6 pb-24">
-        <VideoTile poster={heroFigure} />
+        <div className="overflow-hidden rounded-2xl border border-border bg-white">
+          <img src={bankDiagram.url} alt="Схема арбитража на РКО" className="h-auto w-full" />
+        </div>
       </div>
 
       {/* STEP 2 - reviews */}
@@ -219,13 +221,13 @@ function Landing() {
             >
               <div className={i % 2 === 1 ? "md:order-2" : ""}>
                 <h3 className="text-xl font-bold md:text-2xl">{r.name}</h3>
-                <p className="mt-1 text-sm text-muted-foreground">{r.tag}</p>
+              {r.tag && <p className="mt-1 text-sm text-muted-foreground">{r.tag}</p>}
                 <p className="mt-5 text-sm leading-relaxed text-foreground/85 md:text-base">
                   {r.text}
                 </p>
               </div>
               <div className={i % 2 === 1 ? "md:order-1" : ""}>
-                <VideoTile poster={r.poster} />
+              <ImageTile poster={r.poster} />
               </div>
               <div className="pointer-events-none absolute bottom-4 right-6 text-6xl font-extrabold text-white/[0.05] md:text-8xl">
                 {r.n}
@@ -233,11 +235,7 @@ function Landing() {
             </div>
           ))}
         </div>
-        <div className="mb-24 flex justify-center">
-          <a href="https://t.me/prodsimon" className="btn-pill bg-secondary text-secondary-foreground">
-            больше отзывов
-          </a>
-        </div>
+        <div className="pb-8" />
       </section>
 
       {/* STEP 3 - FAQ */}
@@ -254,7 +252,7 @@ function Landing() {
         <div className="mx-auto grid max-w-6xl grid-cols-1 gap-6 px-6 pb-24 md:grid-cols-2">
           {faqs.map((f) => (
             <div key={f.q} className="card-surface grid grid-cols-1 gap-4 overflow-hidden p-4 md:grid-cols-[1fr_1.3fr] md:p-6">
-              <VideoTile />
+              <ImageTile poster={questionImg.url} />
               <div className="p-2">
                 <h3 className="text-lg font-bold md:text-xl">{f.q}</h3>
                 <p className="mt-3 text-sm leading-relaxed text-muted-foreground md:text-base">
@@ -274,25 +272,15 @@ function Landing() {
           subtitle="Напиши Симону о покупке, нажав «Войти в PROD»"
         />
         <div className="mx-auto max-w-3xl px-6">
-          <VideoTile />
+          <ImageTile />
         </div>
 
-        <div className="mx-auto mt-16 grid max-w-6xl grid-cols-1 items-start gap-6 px-6 pb-24 md:grid-cols-3">
+        <div className="mx-auto mt-16 grid max-w-3xl grid-cols-1 items-start gap-6 px-6 pb-24">
           <PricingCard
-            title="Доступ в PROD навсегда"
-            price="19 000"
-            items={included}
-          />
-          <PricingCard
-            title="Доступ в PROD на 3 месяца"
-            price="12 900"
+            title="Доступ в телеграм канал"
+            price="0"
             items={included}
             featured
-          />
-          <PricingCard
-            title="Консультация + PROD"
-            price="55 000"
-            items={consultIncluded}
           />
         </div>
       </section>
@@ -366,6 +354,23 @@ function VideoTile({ poster }: { poster?: string }) {
   );
 }
 
+function ImageTile({ poster }: { poster?: string }) {
+  return (
+    <div
+      className="aspect-video w-full overflow-hidden rounded-2xl border border-border bg-secondary"
+      style={
+        poster
+          ? {
+              backgroundImage: `url(${poster})`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+            }
+          : undefined
+      }
+    />
+  );
+}
+
 function PricingCard({
   title,
   price,
@@ -399,7 +404,7 @@ function PricingCard({
         href="https://t.me/prodsimon"
         className={`btn-pill mt-6 w-full ${featured ? "btn-pill-red" : "btn-pill-light"}`}
       >
-        Перейти к оплате
+        Перейти в тг
       </a>
       <div className="mt-6 flex items-center gap-3 text-xs uppercase tracking-[0.16em] text-muted-foreground">
         <span className="h-px flex-1 bg-border" />
