@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import heroSplit from "@/assets/hero-split.jpg.asset.json";
+const heroSplit = { url: "/hero-split.jpg" };
 const zargarovDesert = { url: "/zargarov-desert.jpg" };
 const faqPortrait = { url: "/faq-portrait.jpg" };
 const bankDiagram = { url: "/bank-diagram.jpg" };
