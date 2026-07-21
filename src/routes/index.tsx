@@ -3,6 +3,11 @@ import heroFigure from "@/assets/hero-figure.jpg";
 import heroSplit from "@/assets/hero-split.jpg.asset.json";
 import zargarovDesert from "@/assets/zargarov-desert.jpg.asset.json";
 import faqPortrait from "@/assets/faq-portrait.jpg.asset.json";
+import bankDiagram from "@/assets/bank-diagram.jpg.asset.json";
+import romaImg from "@/assets/roma.jpg.asset.json";
+import nikitaImg from "@/assets/nikita.jpg.asset.json";
+import dimaImg from "@/assets/dima.jpg.asset.json";
+import questionImg from "@/assets/question.jpg.asset.json";
 
 export const Route = createFileRoute("/")({
   component: Landing,
@@ -25,21 +30,24 @@ const reviews: Array<{ n: string; name: string; tag: string; text: string; poste
   },
   {
     n: "02",
-    name: "Артём, 18 лет, 200к ₽/мес",
-    tag: "AI Digital",
-    text: "За 2 месяца в PROD сделал более 400к ₽ с полного нуля. На данный момент двигает своё агентство по ИИ и запускает личный бренд.",
+    name: "Рома, 20 лет, 77к ₽",
+    tag: "",
+    text: "Работал на складе WB, был неудачный опыт в трейдинге, пробовал заниматься дизайном, сейчас набирает обороты в арбитраже.",
+    poster: romaImg.url,
   },
   {
     n: "03",
-    name: "Иван, 21 год, 250–300к ₽/мес",
-    tag: "Ютуб-продюсирование",
-    text: "Год назад работал разнорабочим в продуктовом. После входа в PROD за 3 месяца сделал 100 тыс ₽/мес с нуля, а потом и 250 тыс ₽/мес. Сейчас работает с топовыми компаниями.",
+    name: "Никита, 23 года, 120к ₽",
+    tag: "",
+    text: "Если честно, ждал какого-то чуда от жизни и не было какой-то мотивации, не хотел тратить энергию. Был негативный опыт в P2P, в основном старался зарабатывать в интернете, был также чаттинг, но всё это брехня по сравнению с арбитражом.",
+    poster: nikitaImg.url,
   },
   {
     n: "04",
-    name: "Арсен, 16 лет, 150к ₽/мес",
-    tag: "Монтаж рекламных роликов на западный рынок",
-    text: "Учась в лицее, где очень мало времени, смог выйти на стабильные 100к ₽ спустя 1,5 месяца входа в PROD.",
+    name: "Дима, 15 лет, 55к ₽",
+    tag: "",
+    text: "Этот человек подтверждает, что имея желание, можно зайти в любую сферу — он только начал, у него всё впереди.",
+    poster: dimaImg.url,
   },
 ];
 
@@ -59,16 +67,9 @@ const faqs = [
 ];
 
 const included = [
-  "Доступ ко ВСЕМ материалам (список материалов внутри)",
-  "Эфиры с индивидуальными РАЗБОРАМИ каждый месяц",
-  "Окружение молодых предпринимателей",
-];
-
-const consultIncluded = [
-  "Двухчасовой звонок с Симоном",
-  "Индивидуальный план действий: понимание, что делать конкретно СЕЙЧАС",
-  "Запись нашей консультации",
-  "Работа в личных сообщениях даже после консультации",
+  "Бесплатные связки и информация по арбитражу",
+  "Актуальные сферы и оферы в арбитраже",
+  "Окружение единомышленников (в этой сфере информации реально мало)",
 ];
 
 function Landing() {
