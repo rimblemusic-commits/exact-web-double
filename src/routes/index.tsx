@@ -110,7 +110,8 @@ function Landing() {
           <div>
             <h1 className="text-5xl font-extrabold leading-[1.05] tracking-tight md:text-6xl">
               <span className="text-foreground">АРБИТРАЖ</span>
-              <span className="text-muted-foreground"> — вершина</span>
+              <span className="text-muted-foreground"> — </span>
+              <span className="text-gold">вершина</span>
               <br />
               <span className="text-foreground">денежного потока</span>
             </h1>
@@ -125,11 +126,12 @@ function Landing() {
               alt="ZARGAROV"
               width={1920}
               height={1080}
-              className="h-auto w-full rounded-3xl object-contain"
+              className="h-auto w-full rounded-3xl object-contain animate-fade-in transition-transform duration-700 hover:scale-[1.02]"
             />
-            <div className="absolute bottom-6 left-6 rounded-2xl border border-white/10 bg-black/60 px-4 py-3 backdrop-blur">
+            <div className="absolute bottom-6 left-6 rounded-2xl border border-[color:#f5c542]/30 bg-black/60 px-4 py-3 backdrop-blur">
               <div className="text-sm font-bold">ZARGAROV</div>
             </div>
+            <div className="pointer-events-none absolute -inset-6 -z-10 rounded-[2rem] bg-[radial-gradient(circle_at_center,rgba(245,197,66,0.18),transparent_70%)] blur-2xl" />
           </div>
         </div>
         <div className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-b from-transparent to-background" />
@@ -140,7 +142,7 @@ function Landing() {
         <div className="pointer-events-none absolute inset-x-0 -top-32 h-32 bg-gradient-to-b from-background to-transparent" />
         <div className="card-surface p-6 md:p-10">
           <h2 className="text-center text-4xl font-extrabold tracking-tight text-silver md:text-5xl">
-            Кто такой ZARGAROV?
+            Кто такой <span className="text-silver underline decoration-[#f5c542] decoration-4 underline-offset-8">ZARGAROV</span>?
           </h2>
 
           <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2">
@@ -159,7 +161,7 @@ function Landing() {
                     </div>
                   </div>
                   <div>
-                    <div className="text-4xl font-extrabold">3.3 млн ₽</div>
+                    <div className="text-4xl font-extrabold text-gold">1 млн ₽</div>
                     <div className="text-xs uppercase tracking-widest text-muted-foreground">
                       суммарный доход учеников
                     </div>
@@ -182,7 +184,7 @@ function Landing() {
                 width={900}
                 height={1200}
                 loading="lazy"
-                className="h-full w-full object-cover"
+                className="h-full w-full object-cover transition-transform duration-700 hover:scale-105"
               />
             </div>
           </div>
@@ -201,8 +203,12 @@ function Landing() {
         subtitle="И осознай, что это не очередная схемка-темка."
       />
       <div className="mx-auto max-w-4xl px-6 pb-24">
-        <div className="overflow-hidden rounded-2xl border border-border bg-white">
-          <img src={bankDiagram.url} alt="Схема арбитража на РКО" className="h-auto w-full" />
+        <div className="group overflow-hidden rounded-2xl border border-[color:#f5c542]/20 bg-white shadow-[0_0_60px_-20px_rgba(245,197,66,0.35)]">
+          <img
+            src={bankDiagram.url}
+            alt="Схема арбитража на РКО"
+            className="h-auto w-full transition-transform duration-700 group-hover:scale-[1.03]"
+          />
         </div>
       </div>
 
@@ -301,8 +307,9 @@ function StepHeader({
 }) {
   return (
     <div className="mx-auto max-w-4xl px-6 pt-8 pb-10 text-center">
-      <div className="inline-block border-b-2 border-[color:var(--accent)] pb-1 text-2xl font-extrabold tracking-wide text-silver md:text-3xl">
+      <div className="relative inline-block pb-2 text-2xl font-extrabold tracking-wide text-silver md:text-3xl">
         {number}
+        <span className="absolute inset-x-0 bottom-0 h-[3px] rounded-full bg-gold" />
       </div>
       <h2 className="mt-5 text-3xl font-extrabold leading-tight tracking-tight text-silver md:text-5xl">
         {title}
@@ -345,7 +352,7 @@ function VideoTile({ poster }: { poster?: string }) {
 function ImageTile({ poster }: { poster?: string }) {
   return (
     <div
-      className="aspect-video w-full overflow-hidden rounded-2xl border border-border bg-secondary"
+      className="aspect-video w-full overflow-hidden rounded-2xl border border-border bg-secondary transition-all duration-500 hover:scale-[1.03] hover:border-[color:#f5c542]/40 hover:shadow-[0_0_40px_-10px_rgba(245,197,66,0.35)]"
       style={
         poster
           ? {
@@ -373,11 +380,11 @@ function PricingCard({
   return (
     <div
       className={`card-surface relative flex h-full flex-col p-6 md:p-8 ${
-        featured ? "border-[color:var(--accent)]/60 shadow-[0_0_60px_-20px_rgba(255,45,45,0.55)]" : ""
+        featured ? "border-[color:#f5c542]/60 shadow-[0_0_60px_-20px_rgba(245,197,66,0.55)]" : ""
       }`}
     >
       {featured && (
-        <div className="absolute -top-4 left-1/2 -translate-x-1/2 rounded-full bg-[color:var(--accent)] px-4 py-1.5 text-xs font-semibold uppercase tracking-wider">
+        <div className="absolute -top-4 left-1/2 -translate-x-1/2 rounded-full bg-gold px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-[#201400]">
           Ограниченный оффер
         </div>
       )}
@@ -392,7 +399,7 @@ function PricingCard({
         href="https://telegram.me/+BV_uXHwGpNBjN2Yy"
         target="_blank"
         rel="noreferrer"
-        className={`btn-pill mt-6 w-full ${featured ? "btn-pill-red" : "btn-pill-light"}`}
+        className={`btn-pill mt-6 w-full transition-transform hover:scale-[1.02] ${featured ? "btn-pill-gold" : "btn-pill-light"}`}
       >
         Перейти в тг
       </a>
