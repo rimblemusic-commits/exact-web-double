@@ -351,8 +351,7 @@ function VideoTile({ poster }: { poster?: string }) {
 function ImageTile({ poster }: { poster?: string }) {
   return (
     <div
-      className="aspect-video w-full overflow-hidden rounded-2xl border border-border bg-secondary"
-      /* replaced below */
+      className="aspect-video w-full overflow-hidden rounded-2xl border border-border bg-secondary transition-all duration-500 hover:scale-[1.03] hover:border-[color:#f5c542]/40 hover:shadow-[0_0_40px_-10px_rgba(245,197,66,0.35)]"
       style={
         poster
           ? {
