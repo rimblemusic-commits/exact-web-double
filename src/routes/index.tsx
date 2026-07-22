@@ -156,13 +156,18 @@ function Landing() {
                 </p>
                 <div className="mt-6 flex items-end gap-10">
                   <div>
-                    <div className="text-4xl font-extrabold">20</div>
+                    <div className="text-4xl font-extrabold">
+                      <AnimatedCounter to={20} />
+                    </div>
                     <div className="text-xs uppercase tracking-widest text-muted-foreground">
                       лет
                     </div>
                   </div>
                   <div>
-                    <div className="text-4xl font-extrabold text-gold">1 млн ₽</div>
+                    <div className="text-4xl font-extrabold text-gold">
+                      <AnimatedCounter to={1} decimals={0} />
+                      {" млн ₽"}
+                    </div>
                     <div className="text-xs uppercase tracking-widest text-muted-foreground">
                       суммарный доход учеников
                     </div>
