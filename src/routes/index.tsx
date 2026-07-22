@@ -307,8 +307,9 @@ function StepHeader({
 }) {
   return (
     <div className="mx-auto max-w-4xl px-6 pt-8 pb-10 text-center">
-      <div className="inline-block border-b-2 border-[color:var(--accent)] pb-1 text-2xl font-extrabold tracking-wide text-silver md:text-3xl">
+      <div className="relative inline-block pb-2 text-2xl font-extrabold tracking-wide text-silver md:text-3xl">
         {number}
+        <span className="absolute inset-x-0 bottom-0 h-[3px] rounded-full bg-gold" />
       </div>
       <h2 className="mt-5 text-3xl font-extrabold leading-tight tracking-tight text-silver md:text-5xl">
         {title}
