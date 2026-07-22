@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useEffect, useRef, useState } from "react";
 const heroSplit = { url: "/hero-split.jpg" };
 const zargarovDesert = { url: "/zargarov-desert.jpg" };
 const faqPortrait = { url: "/faq-portrait.jpg" };
