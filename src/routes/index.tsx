@@ -380,11 +380,11 @@ function PricingCard({
   return (
     <div
       className={`card-surface relative flex h-full flex-col p-6 md:p-8 ${
-        featured ? "border-[color:var(--accent)]/60 shadow-[0_0_60px_-20px_rgba(255,45,45,0.55)]" : ""
+        featured ? "border-[color:#f5c542]/60 shadow-[0_0_60px_-20px_rgba(245,197,66,0.55)]" : ""
       }`}
     >
       {featured && (
-        <div className="absolute -top-4 left-1/2 -translate-x-1/2 rounded-full bg-[color:var(--accent)] px-4 py-1.5 text-xs font-semibold uppercase tracking-wider">
+        <div className="absolute -top-4 left-1/2 -translate-x-1/2 rounded-full bg-gold px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-[#201400]">
           Ограниченный оффер
         </div>
       )}
@@ -399,7 +399,7 @@ function PricingCard({
         href="https://telegram.me/+BV_uXHwGpNBjN2Yy"
         target="_blank"
         rel="noreferrer"
-        className={`btn-pill mt-6 w-full ${featured ? "btn-pill-red" : "btn-pill-light"}`}
+        className={`btn-pill mt-6 w-full transition-transform hover:scale-[1.02] ${featured ? "btn-pill-gold" : "btn-pill-light"}`}
       >
         Перейти в тг
       </a>
