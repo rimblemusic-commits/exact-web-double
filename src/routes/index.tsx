@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useEffect, useRef, useState } from "react";
 const heroSplit = { url: "/hero-split.jpg" };
 const zargarovDesert = { url: "/zargarov-desert.jpg" };
 const faqPortrait = { url: "/faq-portrait.jpg" };
@@ -155,13 +156,18 @@ function Landing() {
                 </p>
                 <div className="mt-6 flex items-end gap-10">
                   <div>
-                    <div className="text-4xl font-extrabold">20</div>
+                    <div className="text-4xl font-extrabold">
+                      <AnimatedCounter to={20} />
+                    </div>
                     <div className="text-xs uppercase tracking-widest text-muted-foreground">
                       лет
                     </div>
                   </div>
                   <div>
-                    <div className="text-4xl font-extrabold text-gold">1 млн ₽</div>
+                    <div className="text-4xl font-extrabold text-gold">
+                      <AnimatedCounter to={1} decimals={0} />
+                      {" млн ₽"}
+                    </div>
                     <div className="text-xs uppercase tracking-widest text-muted-foreground">
                       суммарный доход учеников
                     </div>
@@ -366,6 +372,48 @@ function ImageTile({ poster }: { poster?: string }) {
   );
 }
 
+function AnimatedCounter({
+  to,
+  duration = 1600,
+  decimals = 0,
+}: {
+  to: number;
+  duration?: number;
+  decimals?: number;
+}) {
+  const ref = useRef<HTMLSpanElement | null>(null);
+  const [value, setValue] = useState(0);
+  const started = useRef(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting && !started.current) {
+            started.current = true;
+            const start = performance.now();
+            const tick = (now: number) => {
+              const p = Math.min((now - start) / duration, 1);
+              const eased = 1 - Math.pow(1 - p, 3);
+              setValue(to * eased);
+              if (p < 1) requestAnimationFrame(tick);
+              else setValue(to);
+            };
+            requestAnimationFrame(tick);
+          }
+        });
+      },
+      { threshold: 0.4 },
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, [to, duration]);
+
+  return <span ref={ref}>{value.toFixed(decimals)}</span>;
+}
+
 function PricingCard({
   title,
   price,
@@ -384,7 +432,7 @@ function PricingCard({
       }`}
     >
       {featured && (
-        <div className="absolute -top-4 left-1/2 -translate-x-1/2 rounded-full bg-gold px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-[#201400]">
+        <div className="absolute -top-4 left-1/2 -translate-x-1/2 rounded-full bg-[color:var(--accent)] px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-white shadow-[0_0_25px_rgba(255,45,45,0.75)] animate-pulse">
           Ограниченный оффер
         </div>
       )}
