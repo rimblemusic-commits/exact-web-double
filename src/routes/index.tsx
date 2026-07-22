@@ -390,7 +390,7 @@ function PricingCard({
       }`}
     >
       {featured && (
-        <div className="absolute -top-4 left-1/2 -translate-x-1/2 rounded-full bg-gold px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-[#201400]">
+        <div className="absolute -top-4 left-1/2 -translate-x-1/2 rounded-full bg-[color:var(--accent)] px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-white shadow-[0_0_25px_rgba(255,45,45,0.75)] animate-pulse">
           Ограниченный оффер
         </div>
       )}
