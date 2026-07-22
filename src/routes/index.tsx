@@ -352,6 +352,7 @@ function ImageTile({ poster }: { poster?: string }) {
   return (
     <div
       className="aspect-video w-full overflow-hidden rounded-2xl border border-border bg-secondary"
+      /* replaced below */
       style={
         poster
           ? {
