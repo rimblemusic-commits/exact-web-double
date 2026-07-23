@@ -1,390 +1,654 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useRef, useState } from "react";
-const heroSplit = { url: "/hero-split.jpg" };
-const zargarovDesert = { url: "/zargarov-desert.jpg" };
-const faqPortrait = { url: "/faq-portrait.jpg" };
-const bankDiagram = { url: "/bank-diagram.jpg" };
-const romaImg = { url: "/roma.jpg" };
-const nikitaImg = { url: "/nikita.jpg" };
-const dimaImg = { url: "/dima.jpg" };
-const questionImg = { url: "/question.jpg" };
+import { useEffect, useMemo, useRef, useState } from "react";
+import { motion, useInView, useScroll, useSpring, AnimatePresence } from "framer-motion";
+import { ChevronDown, Star, Zap, Smartphone, Clock, GraduationCap, ArrowRight, Send, ShieldCheck, TrendingUp, Users, Sparkles } from "lucide-react";
+
+const heroSplit = "/hero-split.jpg";
+const zargarovDesert = "/zargarov-desert.jpg";
+const faqPortrait = "/faq-portrait.jpg";
+const bankDiagram = "/bank-diagram.jpg";
+const romaImg = "/roma.jpg";
+const nikitaImg = "/nikita.jpg";
+const dimaImg = "/dima.jpg";
 
 export const Route = createFileRoute("/")({
   component: Landing,
 });
 
+const TG = "https://telegram.me/+BV_uXHwGpNBjN2Yy";
+
 const nav = [
   { label: "Главная", href: "#top" },
-  { label: "Отзывы", href: "#reviews" },
-  { label: "Вопросы", href: "#faq" },
+  { label: "О себе", href: "#about" },
+  { label: "Схема", href: "#how" },
+  { label: "Кейсы", href: "#reviews" },
+  { label: "FAQ", href: "#faq" },
   { label: "Тарифы", href: "#pricing" },
 ];
 
-const reviews: Array<{ n: string; name: string; tag: string; text: string; poster?: string }> = [
-  {
-    n: "01",
-    name: "Глеб, 19 лет, 160к ₽",
-    tag: "в первый месяц",
-    text: "Пришёл с долгами, никогда удалённо не работал, не верил, что возможно зарабатывать в интернете.",
-    poster: faqPortrait.url,
-  },
-  {
-    n: "02",
-    name: "Рома, 20 лет, 77к ₽",
-    tag: "",
-    text: "Работал на складе WB, был неудачный опыт в трейдинге, пробовал заниматься дизайном, сейчас набирает обороты в арбитраже.",
-    poster: romaImg.url,
-  },
-  {
-    n: "03",
-    name: "Никита, 23 года, 120к ₽",
-    tag: "",
-    text: "Если честно, ждал какого-то чуда от жизни и не было какой-то мотивации, не хотел тратить энергию. Был негативный опыт в P2P, в основном старался зарабатывать в интернете, был также чаттинг, но всё это брехня по сравнению с арбитражом.",
-    poster: nikitaImg.url,
-  },
-  {
-    n: "04",
-    name: "Дима, 15 лет, 55к ₽",
-    tag: "",
-    text: "Этот человек подтверждает, что имея желание, можно зайти в любую сферу — он только начал, у него всё впереди.",
-    poster: dimaImg.url,
-  },
+const perks = [
+  { icon: Zap, label: "Без вложений" },
+  { icon: Smartphone, label: "С телефона" },
+  { icon: Clock, label: "От 2 часов в день" },
+  { icon: GraduationCap, label: "Бесплатное обучение" },
+];
+
+const reviews = [
+  { n: "01", name: "Глеб", age: "19 лет", income: "160 000 ₽", tag: "в первый месяц", text: "Пришёл с долгами, никогда удалённо не работал, не верил, что возможно зарабатывать в интернете.", poster: faqPortrait },
+  { n: "02", name: "Рома", age: "20 лет", income: "77 000 ₽", tag: "стабильно", text: "Работал на складе WB, был неудачный опыт в трейдинге, пробовал заниматься дизайном, сейчас набирает обороты в арбитраже.", poster: romaImg },
+  { n: "03", name: "Никита", age: "23 года", income: "120 000 ₽", tag: "в месяц", text: "Ждал чуда от жизни, не хотел тратить энергию. Был негативный опыт в P2P, чаттинг — всё это брехня по сравнению с арбитражом.", poster: nikitaImg },
+  { n: "04", name: "Дима", age: "15 лет", income: "55 000 ₽", tag: "только начал", text: "Подтверждает, что имея желание, можно зайти в любую сферу — он только начал, у него всё впереди.", poster: dimaImg },
 ];
 
 const faqs = [
-  {
-    q: "Как быстро я смогу выйти на доход?",
-    a: "Всё зависит от тебя. Всё, что тебе нужно — пройти регистрацию, получить ссылку и оформить лидов. В течение месяца деньги будут уже у тебя.",
-  },
-  {
-    q: "Это точно легально? (я первый раз слышу о такой сфере)",
-    a: "Да, эта ниша полностью легальная. Я против всяких серых схем, потому что обычно это не на долгий срок. Тут же ведётся официальная работа с банками, что гарантирует безопасность.",
-  },
-  {
-    q: "Подойдёт ли мне сфера, если не было опыта на удалёнке?",
-    a: "Да, конечно — это самая быстрая сфера, чтобы получить прибыль здесь и сейчас, особенно если сравнить с digital-сферами, в которых сначала нужно долго учиться. Я сам когда-то был монтажёром и понимаю, о чём говорю.",
-  },
+  { q: "Как быстро я смогу выйти на доход?", a: "Всё зависит от тебя. Пройди регистрацию, получи ссылку и оформи лидов. В течение месяца деньги будут уже у тебя." },
+  { q: "Это точно легально?", a: "Да, ниша полностью легальная. Я против серых схем — обычно это ненадолго. Здесь ведётся официальная работа с банками, что гарантирует безопасность." },
+  { q: "Подойдёт ли мне, если не было опыта на удалёнке?", a: "Да. Это самая быстрая сфера, чтобы получить прибыль здесь и сейчас — не нужно годами учиться, как в digital. Я сам был монтажёром и понимаю, о чём говорю." },
+  { q: "Сколько времени нужно уделять в день?", a: "От 2 часов в день достаточно, чтобы выйти на первые результаты. Всё делается с телефона." },
+  { q: "Нужны ли вложения?", a: "Нет. Стартовать можно с нуля — ни рубля вложений не требуется." },
 ];
 
 const included = [
   "Бесплатные связки и информация по арбитражу",
   "Актуальные сферы и оферы в арбитраже",
-  "Окружение единомышленников (в этой сфере информации реально мало)",
+  "Окружение единомышленников",
+  "Разборы кейсов и поддержка",
+];
+
+const steps = [
+  { n: "01", title: "Регистрация", text: "Открываешь РКО по нашей связке — всё бесплатно, с телефона." },
+  { n: "02", title: "Ссылка", text: "Получаешь партнёрскую ссылку и материалы для запуска." },
+  { n: "03", title: "Лиды", text: "Приводишь клиентов по готовым скриптам и офферам." },
+  { n: "04", title: "Выплата", text: "Банк платит комиссию — деньги приходят на карту." },
 ];
 
 function Landing() {
+  const { scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 });
+
   return (
-    <div id="top" className="min-h-screen bg-background text-foreground">
-      {/* NAV */}
-      <header className="sticky top-0 z-40 border-b border-border/60 bg-background/70 backdrop-blur-lg">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-          <a href="#top" className="text-2xl font-extrabold tracking-tight">
-            ZARGAROV
-          </a>
-          <nav className="hidden items-center gap-10 md:flex">
-            {nav.map((n) => (
-              <a
-                key={n.href}
-                href={n.href}
-                className="text-sm text-foreground/80 transition hover:text-foreground"
-              >
-                {n.label}
-              </a>
-            ))}
-          </nav>
-          <a
-            href="https://telegram.me/+BV_uXHwGpNBjN2Yy"
-            target="_blank"
-            rel="noreferrer"
-            className="text-sm font-medium text-foreground/90 transition hover:text-foreground"
+    <div id="top" className="min-h-screen bg-background text-foreground overflow-x-hidden">
+      {/* progress bar */}
+      <motion.div style={{ scaleX }} className="fixed top-0 left-0 right-0 h-[2px] origin-left bg-gradient-to-r from-[#a26b18] via-[#f5c542] to-[#fff2a8] z-50" />
+
+      <Header />
+      <Hero />
+      <About />
+      <HowItWorks />
+      <Reviews />
+      <TrustStrip />
+      <FAQ />
+      <Pricing />
+      <Footer />
+
+      <FloatingCTA />
+    </div>
+  );
+}
+
+/* ---------------- HEADER ---------------- */
+function Header() {
+  const [scrolled, setScrolled] = useState(false);
+  useEffect(() => {
+    const on = () => setScrolled(window.scrollY > 20);
+    on();
+    window.addEventListener("scroll", on);
+    return () => window.removeEventListener("scroll", on);
+  }, []);
+  return (
+    <header className={`sticky top-0 z-40 transition-all duration-300 ${scrolled ? "border-b border-border/60 bg-background/70 backdrop-blur-xl" : "bg-transparent"}`}>
+      <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
+        <a href="#top" className="text-xl font-extrabold tracking-tight md:text-2xl">ZARGAROV</a>
+        <nav className="hidden items-center gap-8 md:flex">
+          {nav.map((n) => (
+            <a key={n.href} href={n.href} className="text-sm text-foreground/70 transition hover:text-foreground">{n.label}</a>
+          ))}
+        </nav>
+        <a href={TG} target="_blank" rel="noreferrer" className="group inline-flex items-center gap-2 rounded-full border border-[color:#f5c542]/40 bg-[color:#f5c542]/10 px-4 py-2 text-sm font-semibold text-[#f5c542] transition hover:bg-[color:#f5c542]/20">
+          <Send className="h-4 w-4" /> Telegram
+        </a>
+      </div>
+    </header>
+  );
+}
+
+/* ---------------- HERO ---------------- */
+function Hero() {
+  return (
+    <section className="relative overflow-hidden">
+      <div className="pointer-events-none absolute inset-0 grid-bg opacity-40" />
+      <div className="pointer-events-none absolute -left-40 top-40 h-[520px] w-[520px] rounded-full bg-[#f5c542]/10 blur-3xl" />
+      <div className="pointer-events-none absolute -right-40 top-0 h-[420px] w-[420px] rounded-full bg-white/5 blur-3xl" />
+
+      <div className="relative mx-auto grid max-w-7xl grid-cols-1 items-center gap-12 px-6 py-16 md:grid-cols-2 md:py-28">
+        <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }}>
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="mb-6 inline-flex items-center gap-2 rounded-full border border-[color:#f5c542]/30 bg-[color:#f5c542]/5 px-3.5 py-1.5 text-xs font-medium text-[#f5c542] backdrop-blur"
           >
-            Telegram
-          </a>
-        </div>
-      </header>
+            <Sparkles className="h-3.5 w-3.5" /> Набор открыт · Ограниченный оффер
+          </motion.div>
 
-      {/* HERO */}
-      <section className="relative overflow-hidden">
-        <div className="pointer-events-none absolute inset-0 grid-bg opacity-70" />
-        <div className="pointer-events-none absolute -left-40 top-40 h-[520px] w-[520px] rounded-full bg-white/[0.03] blur-3xl" />
-        <div className="relative mx-auto grid max-w-7xl grid-cols-1 items-center gap-10 px-6 py-20 md:grid-cols-2 md:py-28">
-          <div>
-            <h1 className="text-5xl font-extrabold leading-[1.05] tracking-tight md:text-6xl">
-              <span className="text-foreground">АРБИТРАЖ</span>
-              <span className="text-muted-foreground"> — </span>
-              <span className="text-gold">вершина</span>
-              <br />
-              <span className="text-foreground">денежного потока</span>
-            </h1>
-            <p className="mt-6 max-w-md text-base text-muted-foreground md:text-lg">
-              Только то, что работает, только то, что приносит прибыль.
-            </p>
+          <h1 className="text-5xl font-extrabold leading-[1.02] tracking-tight md:text-[68px]">
+            <span className="text-foreground">АРБИТРАЖ</span>
+            <span className="text-muted-foreground"> — </span>
+            <span className="text-gold">вершина</span>
+            <br />
+            <span className="text-foreground">денежного потока</span>
+          </h1>
+          <p className="mt-6 max-w-lg text-base text-muted-foreground md:text-lg">
+            Только то, что работает. Только то, что приносит прибыль. Официальный арбитраж на РКО — без вложений, с телефона.
+          </p>
+
+          <div className="mt-8 flex flex-wrap gap-3">
+            <a href={TG} target="_blank" rel="noreferrer" className="btn-pill btn-pill-gold group relative overflow-hidden">
+              <span className="relative z-10 inline-flex items-center gap-2">Вступить бесплатно <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" /></span>
+            </a>
+            <a href="#how" className="btn-pill border border-border bg-white/5 text-foreground backdrop-blur transition hover:bg-white/10">Как это работает</a>
           </div>
 
-          <div className="relative mx-auto w-full">
-            <img
-              src={heroSplit.url}
-              alt="ZARGAROV"
-              width={1920}
-              height={1080}
-              className="h-auto w-full rounded-3xl object-contain animate-fade-in transition-transform duration-700 hover:scale-[1.02]"
-            />
-            <div className="absolute bottom-6 left-6 rounded-2xl border border-[color:#f5c542]/30 bg-black/60 px-4 py-3 backdrop-blur">
-              <div className="text-sm font-bold">ZARGAROV</div>
+          {/* perks */}
+          <div className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-4">
+            {perks.map((p, i) => (
+              <motion.div
+                key={p.label}
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 + i * 0.08 }}
+                className="glass flex flex-col items-start gap-2 rounded-2xl p-3.5"
+              >
+                <p.icon className="h-4 w-4 text-[#f5c542]" />
+                <span className="text-xs font-medium text-foreground/85">{p.label}</span>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* rating */}
+          <div className="mt-8 flex items-center gap-4">
+            <div className="flex -space-x-2">
+              {[romaImg, nikitaImg, dimaImg].map((s) => (
+                <img key={s} src={s} className="h-9 w-9 rounded-full border-2 border-background object-cover" alt="" />
+              ))}
             </div>
-            <div className="pointer-events-none absolute -inset-6 -z-10 rounded-[2rem] bg-[radial-gradient(circle_at_center,rgba(245,197,66,0.18),transparent_70%)] blur-2xl" />
+            <div>
+              <div className="flex items-center gap-1 text-[#f5c542]">
+                {Array.from({ length: 5 }).map((_, i) => <Star key={i} className="h-3.5 w-3.5 fill-current" />)}
+                <span className="ml-1 text-xs text-foreground/80">4.9 · 200+ учеников</span>
+              </div>
+            </div>
           </div>
+        </motion.div>
+
+        {/* right side image + floating income card */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.96 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.9, ease: "easeOut" }}
+          className="relative mx-auto w-full"
+        >
+          <div className="pointer-events-none absolute -inset-8 -z-10 rounded-[2.5rem] bg-[radial-gradient(circle_at_center,rgba(245,197,66,0.28),transparent_70%)] blur-2xl" />
+          <img src={heroSplit} alt="ZARGAROV" className="h-auto w-full rounded-3xl object-contain" />
+
+          {/* income floating card */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6 }}
+            className="glass absolute -bottom-6 -left-4 flex items-center gap-3 rounded-2xl px-4 py-3 shadow-2xl md:-left-8"
+          >
+            <div className="grid h-10 w-10 place-items-center rounded-xl bg-[#f5c542]/15">
+              <TrendingUp className="h-5 w-5 text-[#f5c542]" />
+            </div>
+            <div>
+              <div className="text-[11px] uppercase tracking-wider text-muted-foreground">Доход за месяц</div>
+              <div className="text-lg font-extrabold text-gold">+<AnimatedCounter to={160000} />&nbsp;₽</div>
+            </div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.75 }}
+            className="glass absolute -right-2 top-6 hidden items-center gap-2 rounded-full px-3 py-2 md:flex"
+          >
+            <ShieldCheck className="h-4 w-4 text-[#f5c542]" />
+            <span className="text-xs font-medium">Легально · Работа с банками</span>
+          </motion.div>
+        </motion.div>
+      </div>
+
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-32 bg-gradient-to-b from-transparent to-background" />
+    </section>
+  );
+}
+
+/* ---------------- ABOUT ---------------- */
+function About() {
+  return (
+    <section id="about" className="relative mx-auto max-w-7xl px-6 py-24">
+      <Reveal>
+        <SectionKicker>О ZARGAROV</SectionKicker>
+        <SectionTitle>
+          Кто такой <span className="text-silver underline decoration-[#f5c542] decoration-4 underline-offset-8">ZARGAROV</span>?
+        </SectionTitle>
+      </Reveal>
+
+      <div className="mt-14 grid grid-cols-1 gap-6 lg:grid-cols-5">
+        <Reveal className="lg:col-span-2">
+          <div className="glass relative h-full overflow-hidden rounded-3xl">
+            <img src={zargarovDesert} alt="Заргаров Виталий" className="h-full w-full object-cover transition-transform duration-700 hover:scale-105" />
+            <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 to-transparent p-6">
+              <div className="text-xl font-bold">Заргаров Виталий</div>
+              <div className="text-sm text-muted-foreground">АРБИТРАЖ НА РКО · Цифровые продукты</div>
+            </div>
+          </div>
+        </Reveal>
+
+        <div className="grid gap-4 lg:col-span-3">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+            <StatCard value={<><AnimatedCounter to={20} /></>} label="лет" />
+            <StatCard value={<><AnimatedCounter to={1} />&nbsp;млн ₽</>} label="суммарный доход учеников" gold />
+            <StatCard value={<><AnimatedCounter to={200} />+</>} label="активных учеников" />
+          </div>
+
+          <Reveal>
+            <div className="glass rounded-3xl p-6 md:p-8">
+              <div className="grid gap-4 md:grid-cols-2">
+                {[
+                  "В 11 лет начал делать монтаж на заказ",
+                  "В 2021 ушёл в музыку, открыв лейбл и студию звукозаписи",
+                  "После случился крах всего и переход в АРБИТРАЖ",
+                  "Сейчас продолжаю развивать сферу АРБИТРАЖА",
+                ].map((t, i) => (
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, x: -10 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true, margin: "-80px" }}
+                    transition={{ delay: i * 0.08 }}
+                    className="flex items-start gap-3 rounded-2xl border border-border/50 bg-white/[0.02] p-4"
+                  >
+                    <div className="mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-full bg-[#f5c542]/15 text-[10px] font-bold text-[#f5c542]">{i + 1}</div>
+                    <p className="text-sm leading-relaxed text-foreground/85">{t}</p>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+          </Reveal>
         </div>
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-b from-transparent to-background" />
-      </section>
+      </div>
+    </section>
+  );
+}
 
-      {/* WHO IS SIMON */}
-      <section className="relative mx-auto max-w-7xl px-6 pb-20 animate-fade-in">
-        <div className="pointer-events-none absolute inset-x-0 -top-32 h-32 bg-gradient-to-b from-background to-transparent" />
-        <div className="card-surface p-6 md:p-10">
-          <h2 className="text-center text-4xl font-extrabold tracking-tight text-silver md:text-5xl">
-            Кто такой <span className="text-silver underline decoration-[#f5c542] decoration-4 underline-offset-8">ZARGAROV</span>?
-          </h2>
+function StatCard({ value, label, gold }: { value: React.ReactNode; label: string; gold?: boolean }) {
+  return (
+    <Reveal>
+      <div className="glass relative overflow-hidden rounded-3xl p-6">
+        {gold && <div className="pointer-events-none absolute -inset-1 -z-10 rounded-3xl bg-[radial-gradient(circle_at_top,rgba(245,197,66,0.25),transparent_60%)]" />}
+        <div className={`text-3xl font-extrabold md:text-4xl ${gold ? "text-gold" : ""}`}>{value}</div>
+        <div className="mt-2 text-[11px] uppercase tracking-widest text-muted-foreground">{label}</div>
+      </div>
+    </Reveal>
+  );
+}
 
-          <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2">
-            <div className="flex flex-col gap-6">
-              <div className="card-surface p-6">
-                <h3 className="text-2xl font-bold">Заргаров Виталий</h3>
-                <p className="mt-3 text-sm text-muted-foreground">
-                  <span className="font-semibold text-foreground">Деятельность:</span>{" "}
-                  АРБИТРАЖ НА РКО и продажа цифровых продуктов
-                </p>
-                <div className="mt-6 flex items-end gap-10">
-                  <div>
-                    <div className="text-4xl font-extrabold">
-                      <AnimatedCounter to={20} />
-                    </div>
-                    <div className="text-xs uppercase tracking-widest text-muted-foreground">
-                      лет
-                    </div>
-                  </div>
-                  <div>
-                    <div className="text-4xl font-extrabold text-gold">
-                      <AnimatedCounter to={1} decimals={0} />
-                      {" млн ₽"}
-                    </div>
-                    <div className="text-xs uppercase tracking-widest text-muted-foreground">
-                      суммарный доход учеников
-                    </div>
-                  </div>
+/* ---------------- HOW IT WORKS ---------------- */
+function HowItWorks() {
+  return (
+    <section id="how" className="relative mx-auto max-w-7xl px-6 py-24">
+      <Reveal>
+        <SectionKicker>Схема</SectionKicker>
+        <SectionTitle>Как это работает</SectionTitle>
+        <p className="mx-auto mt-4 max-w-2xl text-center text-muted-foreground">Прозрачная модель заработка на РКО. Никаких серых схем — только официальная работа с банками.</p>
+      </Reveal>
+
+      <div className="mt-12">
+        <Reveal>
+          <div className="glass overflow-hidden rounded-3xl p-4 md:p-6">
+            <img src={bankDiagram} alt="Схема арбитража на РКО" className="w-full rounded-2xl bg-white" />
+          </div>
+        </Reveal>
+      </div>
+
+      <div className="relative mt-10 grid grid-cols-1 gap-4 md:grid-cols-4">
+        <div className="pointer-events-none absolute left-4 right-4 top-8 hidden h-px bg-gradient-to-r from-transparent via-[#f5c542]/30 to-transparent md:block" />
+        {steps.map((s, i) => (
+          <motion.div
+            key={s.n}
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ delay: i * 0.1 }}
+            className="glass group relative rounded-3xl p-6 transition hover:border-[#f5c542]/40"
+          >
+            <div className="mb-4 grid h-10 w-10 place-items-center rounded-full border border-[#f5c542]/40 bg-[#f5c542]/10 text-sm font-bold text-[#f5c542]">
+              {s.n}
+            </div>
+            <div className="text-base font-bold">{s.title}</div>
+            <p className="mt-2 text-sm text-muted-foreground">{s.text}</p>
+          </motion.div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+/* ---------------- REVIEWS ---------------- */
+function Reviews() {
+  const trackRef = useRef<HTMLDivElement | null>(null);
+  const scrollBy = (dir: number) => {
+    const el = trackRef.current;
+    if (!el) return;
+    el.scrollBy({ left: dir * (el.clientWidth * 0.85), behavior: "smooth" });
+  };
+
+  return (
+    <section id="reviews" className="relative mx-auto max-w-7xl px-6 py-24">
+      <Reveal>
+        <SectionKicker>Кейсы</SectionKicker>
+        <SectionTitle>Результаты учеников</SectionTitle>
+        <p className="mx-auto mt-4 max-w-2xl text-center text-muted-foreground">Живые истории — от первого дохода до стабильных выплат.</p>
+      </Reveal>
+
+      <div className="relative mt-12">
+        <div
+          ref={trackRef}
+          className="hide-scrollbar flex snap-x snap-mandatory gap-5 overflow-x-auto scroll-smooth pb-4"
+        >
+          {reviews.map((r, i) => (
+            <motion.article
+              key={r.n}
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ delay: i * 0.06 }}
+              className="glass group relative w-[85%] shrink-0 snap-start overflow-hidden rounded-3xl md:w-[420px]"
+            >
+              <div className="relative aspect-[4/5] w-full overflow-hidden">
+                <img src={r.poster} alt={r.name} className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
+                <div className="absolute right-4 top-4 rounded-full border border-[#f5c542]/40 bg-black/60 px-3 py-1 text-xs font-semibold text-[#f5c542] backdrop-blur">
+                  {r.income}
+                </div>
+                <div className="absolute inset-x-0 bottom-0 p-5">
+                  <div className="text-xs uppercase tracking-widest text-[#f5c542]/90">{r.tag}</div>
+                  <div className="mt-1 text-xl font-bold">{r.name}, <span className="text-foreground/70">{r.age}</span></div>
                 </div>
               </div>
-
-              <div className="space-y-4 text-sm leading-relaxed text-muted-foreground md:text-base">
-                <p>В 11 лет начал делать монтаж на заказ.</p>
-                <p>В 2021 ушёл в музыку, открыв лейбл и студию звукозаписи.</p>
-                <p>После случился крах всего и переход в АРБИТРАЖ.</p>
-                <p>Сейчас продолжаю развивать сферу АРБИТРАЖА.</p>
+              <div className="p-5">
+                <p className="text-sm leading-relaxed text-foreground/80">{r.text}</p>
               </div>
+              <div className="pointer-events-none absolute -bottom-6 -right-2 text-8xl font-extrabold text-white/[0.04]">{r.n}</div>
+            </motion.article>
+          ))}
+        </div>
+
+        <div className="mt-4 flex items-center justify-end gap-2">
+          <button aria-label="Prev" onClick={() => scrollBy(-1)} className="glass grid h-10 w-10 place-items-center rounded-full transition hover:border-[#f5c542]/40">
+            <ArrowRight className="h-4 w-4 rotate-180" />
+          </button>
+          <button aria-label="Next" onClick={() => scrollBy(1)} className="glass grid h-10 w-10 place-items-center rounded-full transition hover:border-[#f5c542]/40">
+            <ArrowRight className="h-4 w-4" />
+          </button>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ---------------- TRUST STRIP ---------------- */
+function TrustStrip() {
+  const items = [
+    { icon: ShieldCheck, title: "Официально", text: "Работа с банками, никаких серых схем" },
+    { icon: TrendingUp, title: "Растущий рынок", text: "РКО — одна из самых прибыльных ниш" },
+    { icon: Users, title: "Комьюнити", text: "Окружение единомышленников и поддержка 24/7" },
+  ];
+  return (
+    <section className="mx-auto max-w-7xl px-6 py-12">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+        {items.map((it, i) => (
+          <motion.div
+            key={it.title}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: i * 0.08 }}
+            className="glass flex items-start gap-4 rounded-3xl p-5"
+          >
+            <div className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-[#f5c542]/15 text-[#f5c542]">
+              <it.icon className="h-5 w-5" />
+            </div>
+            <div>
+              <div className="text-sm font-bold">{it.title}</div>
+              <p className="mt-1 text-sm text-muted-foreground">{it.text}</p>
+            </div>
+          </motion.div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+/* ---------------- FAQ ---------------- */
+function FAQ() {
+  const [open, setOpen] = useState<number | null>(0);
+  return (
+    <section id="faq" className="relative mx-auto max-w-4xl px-6 py-24">
+      <Reveal>
+        <SectionKicker>FAQ</SectionKicker>
+        <SectionTitle>Частые вопросы</SectionTitle>
+      </Reveal>
+
+      <div className="mt-12 space-y-3">
+        {faqs.map((f, i) => {
+          const isOpen = open === i;
+          return (
+            <motion.div
+              key={f.q}
+              initial={{ opacity: 0, y: 12 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.04 }}
+              className={`glass overflow-hidden rounded-2xl transition ${isOpen ? "border-[#f5c542]/40" : ""}`}
+            >
+              <button
+                onClick={() => setOpen(isOpen ? null : i)}
+                className="flex w-full items-center justify-between gap-4 p-5 text-left"
+              >
+                <span className="text-base font-semibold md:text-lg">{f.q}</span>
+                <ChevronDown className={`h-5 w-5 shrink-0 text-[#f5c542] transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`} />
+              </button>
+              <AnimatePresence initial={false}>
+                {isOpen && (
+                  <motion.div
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: "auto", opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.28, ease: "easeInOut" }}
+                  >
+                    <div className="px-5 pb-5 text-sm leading-relaxed text-muted-foreground md:text-base">{f.a}</div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </motion.div>
+          );
+        })}
+      </div>
+    </section>
+  );
+}
+
+/* ---------------- PRICING ---------------- */
+function Pricing() {
+  const time = useCountdown(60 * 60 * 24 * 2); // 2 days
+  const seats = 27;
+  return (
+    <section id="pricing" className="relative mx-auto max-w-4xl px-6 py-24">
+      <Reveal>
+        <SectionKicker>Оффер</SectionKicker>
+        <SectionTitle>Прими решение</SectionTitle>
+      </Reveal>
+
+      <Reveal className="mt-14">
+        <div className="glass relative overflow-hidden rounded-[2rem] p-6 md:p-10">
+          <div className="pointer-events-none absolute -inset-1 -z-10 rounded-[2rem] bg-[radial-gradient(circle_at_top,rgba(245,197,66,0.35),transparent_70%)]" />
+          <div className="pointer-events-none absolute inset-0 opacity-60 grid-bg" />
+
+          <div className="relative">
+            <div className="mb-6 flex flex-wrap items-center gap-3">
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-[color:var(--accent)] px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-white shadow-[0_0_25px_rgba(255,45,45,0.75)]">
+                <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-white" /> Ограниченный оффер
+              </span>
+              <span className="rounded-full border border-border/60 bg-white/5 px-3 py-1 text-xs text-foreground/80">Осталось {seats} мест</span>
             </div>
 
-            <div className="overflow-hidden rounded-3xl border border-border">
-              <img
-                src={zargarovDesert.url}
-                alt="Заргаров Виталий"
-                width={900}
-                height={1200}
-                loading="lazy"
-                className="h-full w-full object-cover transition-transform duration-700 hover:scale-105"
-              />
+            <div className="grid gap-8 md:grid-cols-2 md:items-center">
+              <div>
+                <h3 className="text-xs font-bold uppercase tracking-[0.14em] text-foreground/90">Доступ в телеграм канал</h3>
+                <div className="mt-3 flex items-end gap-2">
+                  <span className="text-6xl font-extrabold tracking-tight text-gold">0</span>
+                  <span className="pb-2 text-sm text-muted-foreground">руб.</span>
+                </div>
+                <p className="mt-3 text-sm text-muted-foreground">Заходи бесплатно — получи связки, оферы и окружение.</p>
+
+                {/* countdown */}
+                <div className="mt-6 grid max-w-xs grid-cols-4 gap-2">
+                  {[
+                    { l: "дн", v: time.d },
+                    { l: "ч", v: time.h },
+                    { l: "мин", v: time.m },
+                    { l: "сек", v: time.s },
+                  ].map((t) => (
+                    <div key={t.l} className="glass rounded-xl px-2 py-2 text-center">
+                      <div className="text-lg font-extrabold tabular-nums">{String(t.v).padStart(2, "0")}</div>
+                      <div className="text-[10px] uppercase tracking-widest text-muted-foreground">{t.l}</div>
+                    </div>
+                  ))}
+                </div>
+
+                <a
+                  href={TG}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="btn-pill btn-pill-gold group relative mt-8 w-full overflow-hidden shadow-[0_0_60px_-10px_rgba(245,197,66,0.7)]"
+                >
+                  <span className="relative z-10 inline-flex items-center gap-2">Перейти в Telegram <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" /></span>
+                </a>
+              </div>
+
+              <div>
+                <div className="mb-4 flex items-center gap-3 text-xs uppercase tracking-[0.16em] text-muted-foreground">
+                  <span className="h-px flex-1 bg-border" /> что входит <span className="h-px flex-1 bg-border" />
+                </div>
+                <ul className="space-y-3">
+                  {included.map((it, i) => (
+                    <motion.li
+                      key={it}
+                      initial={{ opacity: 0, x: 10 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: i * 0.06 }}
+                      className="flex items-start gap-3 rounded-2xl border border-border/50 bg-white/[0.02] p-3.5"
+                    >
+                      <span className="mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full bg-[#f5c542]/20">
+                        <svg viewBox="0 0 24 24" className="h-3 w-3 fill-none stroke-[#f5c542]" strokeWidth={3}>
+                          <path d="M5 12l4 4 10-10" strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
+                      </span>
+                      <span className="text-sm text-foreground/90">{it}</span>
+                    </motion.li>
+                  ))}
+                </ul>
+              </div>
             </div>
           </div>
         </div>
-      </section>
-
-      {/* STEP 1 */}
-      <StepHeader
-        number="ШАГ 1:"
-        title={
-          <>
-            Посмотри наглядно, откуда деньги
-            <br className="hidden md:block" /> в АРБИТРАЖЕ на РКО
-          </>
-        }
-        subtitle="И осознай, что это не очередная схемка-темка."
-      />
-      <div className="mx-auto max-w-4xl px-6 pb-24">
-        <div className="group overflow-hidden rounded-2xl border border-[color:#f5c542]/20 bg-white shadow-[0_0_60px_-20px_rgba(245,197,66,0.35)]">
-          <img
-            src={bankDiagram.url}
-            alt="Схема арбитража на РКО"
-            className="h-auto w-full transition-transform duration-700 group-hover:scale-[1.03]"
-          />
-        </div>
-      </div>
-
-      {/* STEP 2 - reviews */}
-      <section id="reviews">
-        <StepHeader
-          number="ШАГ 2:"
-          title="Посмотри на результаты других"
-          subtitle="Здесь наши последние результаты"
-        />
-        <div className="mx-auto grid max-w-6xl grid-cols-1 gap-6 px-6 pb-16">
-          {reviews.map((r, i) => (
-            <div
-              key={r.n}
-              className="card-surface relative grid grid-cols-1 gap-6 overflow-hidden p-6 md:grid-cols-2 md:p-8"
-            >
-              <div className={i % 2 === 1 ? "md:order-2" : ""}>
-                <h3 className="text-xl font-bold md:text-2xl">{r.name}</h3>
-              {r.tag && <p className="mt-1 text-sm text-muted-foreground">{r.tag}</p>}
-                <p className="mt-5 text-sm leading-relaxed text-foreground/85 md:text-base">
-                  {r.text}
-                </p>
-              </div>
-              <div className={i % 2 === 1 ? "md:order-1" : ""}>
-              <ImageTile poster={r.poster} />
-              </div>
-              <div className="pointer-events-none absolute bottom-4 right-6 text-6xl font-extrabold text-white/[0.05] md:text-8xl">
-                {r.n}
-              </div>
-            </div>
-          ))}
-        </div>
-        <div className="pb-8" />
-      </section>
-
-      {/* STEP 3 - FAQ */}
-      <section id="faq">
-        <StepHeader
-          number="ШАГ 3:"
-          title={
-            <>
-              Посмотри ответы на самые
-              <br className="hidden md:block" /> частые вопросы
-            </>
-          }
-        />
-        <div className="mx-auto grid max-w-6xl grid-cols-1 gap-6 px-6 pb-24 md:grid-cols-2">
-          {faqs.map((f) => (
-            <div key={f.q} className="card-surface grid grid-cols-1 gap-4 overflow-hidden p-4 md:grid-cols-[1fr_1.3fr] md:p-6">
-              <ImageTile poster={questionImg.url} />
-              <div className="p-2">
-                <h3 className="text-lg font-bold md:text-xl">{f.q}</h3>
-                <p className="mt-3 text-sm leading-relaxed text-muted-foreground md:text-base">
-                  {f.a}
-                </p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* STEP 4 - Pricing */}
-      <section id="pricing">
-        <StepHeader
-          number="ШАГ 4:"
-          title="Прими решение"
-        />
-        <div className="mx-auto mt-16 grid max-w-3xl grid-cols-1 items-start gap-6 px-6 pb-24">
-          <PricingCard
-            title="Доступ в телеграм канал"
-            price="0"
-            items={included}
-            featured
-          />
-        </div>
-      </section>
-
-      {/* FOOTER */}
-      <footer className="border-t border-border/60">
-        <div className="mx-auto max-w-7xl px-6 py-10 text-center text-xs text-muted-foreground">
-          <div>ZARGAROV</div>
-        </div>
-      </footer>
-    </div>
+      </Reveal>
+    </section>
   );
 }
 
-function StepHeader({
-  number,
-  title,
-  subtitle,
-}: {
-  number: string;
-  title: React.ReactNode;
-  subtitle?: string;
-}) {
+/* ---------------- FOOTER ---------------- */
+function Footer() {
   return (
-    <div className="mx-auto max-w-4xl px-6 pt-8 pb-10 text-center">
-      <div className="relative inline-block pb-2 text-2xl font-extrabold tracking-wide text-silver md:text-3xl">
-        {number}
-        <span className="absolute inset-x-0 bottom-0 h-[3px] rounded-full bg-gold" />
+    <footer className="border-t border-border/60">
+      <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 px-6 py-8 text-xs text-muted-foreground md:flex-row">
+        <div className="font-bold tracking-tight text-foreground">ZARGAROV</div>
+        <div>© {new Date().getFullYear()} · Все права защищены</div>
       </div>
-      <h2 className="mt-5 text-3xl font-extrabold leading-tight tracking-tight text-silver md:text-5xl">
-        {title}
-      </h2>
-      {subtitle && (
-        <p className="mt-4 text-sm text-muted-foreground md:text-base">{subtitle}</p>
+    </footer>
+  );
+}
+
+/* ---------------- FLOATING CTA ---------------- */
+function FloatingCTA() {
+  const [show, setShow] = useState(false);
+  useEffect(() => {
+    const on = () => setShow(window.scrollY > 600);
+    on();
+    window.addEventListener("scroll", on);
+    return () => window.removeEventListener("scroll", on);
+  }, []);
+  return (
+    <AnimatePresence>
+      {show && (
+        <motion.a
+          href={TG}
+          target="_blank"
+          rel="noreferrer"
+          initial={{ opacity: 0, y: 24, scale: 0.9 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          exit={{ opacity: 0, y: 24, scale: 0.9 }}
+          className="fixed bottom-5 right-5 z-50 inline-flex items-center gap-2 rounded-full bg-gradient-to-b from-[#ffe17a] via-[#f5c542] to-[#a26b18] px-5 py-3 text-sm font-bold text-[#201400] shadow-[0_0_40px_rgba(245,197,66,0.55)] transition hover:scale-105"
+        >
+          <Send className="h-4 w-4" /> Вступить
+        </motion.a>
       )}
-    </div>
+    </AnimatePresence>
   );
 }
 
-function VideoTile({ poster }: { poster?: string }) {
+/* ---------------- HELPERS ---------------- */
+function SectionKicker({ children }: { children: React.ReactNode }) {
   return (
-    <div
-      className="relative flex aspect-video w-full items-center justify-center overflow-hidden rounded-2xl border border-border bg-secondary"
-      style={
-        poster
-          ? {
-              backgroundImage: `url(${poster})`,
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-            }
-          : undefined
-      }
+    <div className="mb-4 flex justify-center">
+      <span className="inline-flex items-center gap-2 rounded-full border border-[#f5c542]/30 bg-[#f5c542]/5 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-[#f5c542]">
+        {children}
+      </span>
+    </div>
+  );
+}
+function SectionTitle({ children }: { children: React.ReactNode }) {
+  return (
+    <h2 className="mx-auto max-w-3xl text-center text-4xl font-extrabold leading-tight tracking-tight text-silver md:text-5xl">
+      {children}
+    </h2>
+  );
+}
+
+function Reveal({ children, className = "" }: { children: React.ReactNode; className?: string }) {
+  const ref = useRef<HTMLDivElement | null>(null);
+  const inView = useInView(ref, { once: true, margin: "-80px" });
+  return (
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y: 24 }}
+      animate={inView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.6, ease: "easeOut" }}
+      className={className}
     >
-      <div className="absolute inset-0 bg-black/30" />
-      <button
-        type="button"
-        aria-label="Play video"
-        className="relative flex h-16 w-16 items-center justify-center rounded-full bg-white/90 text-black shadow-2xl transition hover:scale-105"
-      >
-        <svg viewBox="0 0 24 24" className="h-6 w-6 translate-x-[2px] fill-current">
-          <path d="M8 5v14l11-7z" />
-        </svg>
-      </button>
-    </div>
+      {children}
+    </motion.div>
   );
 }
 
-function ImageTile({ poster }: { poster?: string }) {
-  return (
-    <div
-      className="aspect-video w-full overflow-hidden rounded-2xl border border-border bg-secondary transition-all duration-500 hover:scale-[1.03] hover:border-[color:#f5c542]/40 hover:shadow-[0_0_40px_-10px_rgba(245,197,66,0.35)]"
-      style={
-        poster
-          ? {
-              backgroundImage: `url(${poster})`,
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-            }
-          : undefined
-      }
-    />
-  );
-}
-
-function AnimatedCounter({
-  to,
-  duration = 1600,
-  decimals = 0,
-}: {
-  to: number;
-  duration?: number;
-  decimals?: number;
-}) {
+function AnimatedCounter({ to, duration = 1600 }: { to: number; duration?: number }) {
   const ref = useRef<HTMLSpanElement | null>(null);
   const [value, setValue] = useState(0);
   const started = useRef(false);
-
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
@@ -405,69 +669,24 @@ function AnimatedCounter({
           }
         });
       },
-      { threshold: 0.4 },
+      { threshold: 0.4 }
     );
     obs.observe(el);
     return () => obs.disconnect();
   }, [to, duration]);
-
-  return <span ref={ref}>{value.toFixed(decimals)}</span>;
+  const formatted = useMemo(() => Math.round(value).toLocaleString("ru-RU"), [value]);
+  return <span ref={ref}>{formatted}</span>;
 }
 
-function PricingCard({
-  title,
-  price,
-  items,
-  featured = false,
-}: {
-  title: string;
-  price: string;
-  items: string[];
-  featured?: boolean;
-}) {
-  return (
-    <div
-      className={`card-surface relative flex h-full flex-col p-6 md:p-8 ${
-        featured ? "border-[color:#f5c542]/60 shadow-[0_0_60px_-20px_rgba(245,197,66,0.55)]" : ""
-      }`}
-    >
-      {featured && (
-        <div className="absolute -top-4 left-1/2 -translate-x-1/2 rounded-full bg-[color:var(--accent)] px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-white shadow-[0_0_25px_rgba(255,45,45,0.75)] animate-pulse">
-          Ограниченный оффер
-        </div>
-      )}
-      <h3 className="text-xs font-bold uppercase tracking-[0.14em] text-foreground/90">
-        {title}
-      </h3>
-      <div className="mt-6 flex items-end gap-2">
-        <span className="text-5xl font-extrabold tracking-tight">{price}</span>
-        <span className="pb-2 text-sm text-muted-foreground">руб.</span>
-      </div>
-      <a
-        href="https://telegram.me/+BV_uXHwGpNBjN2Yy"
-        target="_blank"
-        rel="noreferrer"
-        className={`btn-pill mt-6 w-full transition-transform hover:scale-[1.02] ${featured ? "btn-pill-gold" : "btn-pill-light"}`}
-      >
-        Перейти в тг
-      </a>
-      <div className="mt-6 flex items-center gap-3 text-xs uppercase tracking-[0.16em] text-muted-foreground">
-        <span className="h-px flex-1 bg-border" />
-        что входит
-        <span className="h-px flex-1 bg-border" />
-      </div>
-      <ul className="mt-6 space-y-4 text-sm text-foreground/85">
-        {items.map((it) => (
-          <li key={it} className="flex items-start gap-3">
-            <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-border bg-secondary">
-              <svg viewBox="0 0 24 24" className="h-3 w-3 fill-none stroke-current" strokeWidth={3}>
-                <path d="M5 12l4 4 10-10" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </span>
-            <span>{it}</span>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
+function useCountdown(seconds: number) {
+  const [remaining, setRemaining] = useState(seconds);
+  useEffect(() => {
+    const i = setInterval(() => setRemaining((r) => (r > 0 ? r - 1 : 0)), 1000);
+    return () => clearInterval(i);
+  }, []);
+  const d = Math.floor(remaining / 86400);
+  const h = Math.floor((remaining % 86400) / 3600);
+  const m = Math.floor((remaining % 3600) / 60);
+  const s = remaining % 60;
+  return { d, h, m, s };
 }
