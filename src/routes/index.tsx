@@ -691,7 +691,7 @@ function MagneticLink({
       }`}
     >
       <span className="pointer-events-none absolute inset-0 rounded-full bg-white/10 opacity-0 blur-xl transition-opacity duration-500 group-hover:opacity-100" />
-      <span className="relative">{children}</span>
+      <span className="relative inline-flex items-center gap-3">{children}</span>
     </motion.a>
   );
 }
